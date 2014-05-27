@@ -3,19 +3,19 @@
 	var e={};
 	["loginView","evaluationView","updateSuccessView"].forEach(function(t){
 		templateCode=document.getElementById(t).text;
-		e[t]=doT.template(templateCode)
+		e[t]=doT.template(templateCode);
 	});
 	var t={
 		loginRequiredView:function(e){
 			return function(){
 				var t=Parse.User.current();
 				if(t){
-					e()
+					e();
 				}
 				else{
 					window.location.hash="login/"+window.location.hash;
 				}
-			}
+			};
 		}
 	};
 		
@@ -25,21 +25,23 @@
 			if(e){
 				document.getElementById("loginButton").style.display="none";
 				document.getElementById("logoutButton").style.display="block";
-				document.getElementById("evaluationButton").style.display="block"
+				document.getElementById("evaluationButton").style.display="block";
 			}
 			else{
 				document.getElementById("loginButton").style.display="block";
 				document.getElementById("logoutButton").style.display="none";
-				document.getElementById("evaluationButton").style.display="none"
-			}document.getElementById("logoutButton").addEventListener("click",function(){
+				document.getElementById("evaluationButton").style.display="none";
+			}
+			document.getElementById("logoutButton").addEventListener("click",function(){
 				Parse.User.logOut();n.navbar();
 				window.location.hash="login/";
-			})
+			});
 		},
 		evaluationView: t.loginRequiredView(function(){
 			var t=Parse.Object.extend("Evaluation");
 			var n=Parse.User.current();
-			var r=new Parse.ACL;r.setPublicReadAccess(false);
+			var r=new Parse.ACL();
+			r.setPublicReadAccess(false);
 			r.setPublicWriteAccess(false);r.setReadAccess(n,true);
 			r.setWriteAccess(n,true);
 			var i=new Parse.Query(t);
@@ -48,14 +50,14 @@
 					window.EVAL=i;
 					if(i===undefined){
 						var s=TAHelp.getMemberlistOf(n.get("username")).filter(function(e){
-							return e.StudentId!==n.get("username")?true:false
+							return e.StudentId!==n.get("username")?true:false;
 						}).map(function(e){
 							e.scores=["0","0","0","0"];
 							return e;
-						})
+						});
 					}
 					else{
-						var s=i.toJSON().evaluations
+						var s=i.toJSON().evaluations;
 					}
 					document.getElementById("content").innerHTML=e.evaluationView(s);
 					document.getElementById("evaluationForm-submit").value=i===undefined?"送出表單":"修改表單";
@@ -67,26 +69,26 @@
 							}
 						}
 						if(i===undefined){
-							i=new t;
+							i=new t();
 							i.set("user",n);
-							i.setACL(r)
+							i.setACL(r);
 						}console.log(s);
 						i.set("evaluations",s);
 						i.save(null,{
 							success:function(){
-								document.getElementById("content").innerHTML=e.updateSuccessView()
+								document.getElementById("content").innerHTML=e.updateSuccessView();
 							},
 							error:function(){}
-						})
-					}, false)
+						});
+					}, false);
 				},
 				error:function(e,t){}
-			})
+			});
 		}),
 		loginView:function(t){
 			var r=function(e){
 				var t=document.getElementById(e).value;
-				return TAHelp.getMemberlistOf(t)===false?false:true
+				return TAHelp.getMemberlistOf(t)===false?false:true;
 			};
 			var i=function(e,t,n){
 				if(!t()){
@@ -111,42 +113,43 @@
 			document.getElementById("form-signin-student-id").addEventListener("keyup",function(){
 				i("form-signin-message",function(){
 					return r("form-signin-student-id");
-				},"The student is not one of the class students.")
+				},"The student is not one of the class students.");
 			});
 			document.getElementById("form-signin").addEventListener("submit",function(){
 				if(!r("form-signin-student-id")){
 					alert("The student is not one of the class students.");
 					return false;
 				}Parse.User.logIn(document.getElementById("form-signin-student-id").value, document.getElementById("form-signin-password").value,{
-					success:function(e){s()},
+					success:function(e){s();},
 					error:function(e,t){
-						i("form-signin-message",function(){return false},"Invaild username or password.")
+						i("form-signin-message",function(){return false;},"Invaild username or password.");
 					}
-				})
+				});
 			},false);
 			document.getElementById("form-signup-student-id").addEventListener("keyup",function(){
 				i("form-signup-message",function(){
 					return r("form-signup-student-id");
-				},"The student is not one of the class students.")
+				},"The student is not one of the class students.");
 			});
 			document.getElementById("form-signup-password1").addEventListener("keyup",o);
 			document.getElementById("form-signup").addEventListener("submit",function(){
 				if(!r("form-signup-student-id")){
 					alert("The student is not one of the class students.");
-					return false
+					return false;
 				}
 				var e=o();
 				if(!e){return false;}
-				var t=new Parse.User;t.set("username",document.getElementById("form-signup-student-id").value);
+				var t=new Parse.User();
+        t.set("username",document.getElementById("form-signup-student-id").value);
 				t.set("password",document.getElementById("form-signup-password").value);
 				t.set("email",document.getElementById("form-signup-email").value);
 				t.signUp(null,{
-					success:function(e){s()},
+					success:function(e){s();},
 					error:function(e,t){
-						i("form-signup-message",function(){return false},t.message)
+						i("form-signup-message",function(){return false;},t.message);
 					}
-				})
-			},false)
+				});
+			},false);
 		}
 	};
 		
@@ -161,8 +164,8 @@
 		loginView: n.loginView
 	});
 		
-	this.Router = new r;
+	this.Router = new r();
 	Parse.history.start();
 	n.navbar();
 
-})()
+})();
