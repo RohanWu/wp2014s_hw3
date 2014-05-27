@@ -140,7 +140,7 @@
 				var e=o();
 				if(!e){return false;}
 				var t=new Parse.User();
-        t.set("username",document.getElementById("form-signup-student-id").value);
+        		t.set("username",document.getElementById("form-signup-student-id").value);
 				t.set("password",document.getElementById("form-signup-password").value);
 				t.set("email",document.getElementById("form-signup-email").value);
 				t.signUp(null,{
